@@ -12,17 +12,16 @@
 
     <div class="article-container">
         <?php
-            $sql = "SELECT * FROM article";
-            $result = mysqli_query($conn, $sql);            //Requête a ma database
-            $queryResults = mysqli_num_rows($result);       //Retourne le nombre de ligne de ma requete result
+            $sql = "SELECT * FROM article";                     //Je défini ma requete sql
+            $statement = $pdo->query($sql);                     //J'interroge ma BDD avec la requete précedemment créée
+            $article = $statement->fetchAll(PDO::FETCH_ASSOC);  //Je créer une variable ayant pour valeur tous les résultats de ma requetes
 
-            if ($queryResults > 0 ) {                       //Si il y a des résultats
-                while ($row = mysqli_fetch_assoc($result)) {//TANT QUE il y a des lignes à afficher c'est à dire tant qu'"il y a des articles dans mon cas
+            if ($article) {                         //Si il y a des résultats
+                foreach ($article as $article){     //TANT QUE il y a des lignes à afficher c'est à dire tant qu'"il y a des articles dans mon cas
                     echo "<div>
-                    <h3>".$row['nom_article']."</h3>
-                    <p>Description : ".$row['description_article']."</p>
-                    <p>Prix unitaire : ".$row['prix_unit_article']." €</p>
-                    <p>Prix au kg : ".$row['prix_kg']." €</p>
+                    <h3>".$article['nom_article']."</h3>
+                    <p>Description : ".$article['description_article']."</p>
+                    <p>Prix unitaire : ".$article['prix_unit_article']." €</p>
                     </div>";
                 }
             }

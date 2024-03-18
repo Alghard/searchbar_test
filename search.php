@@ -7,18 +7,18 @@
 <div class="article-container">
     <?php
     if (isset($_POST["search"])) {
-        $search = mysqli_real_escape_string($conn, $_POST['search']);
+        $search = $_POST['search'];
         $sql = "SELECT * FROM article WHERE nom_article LIKE '%$search%' OR description_article LIKE '%$search%'";  //Requete pour rechercher un article qui "ressemble" a ce que j'ai tapé dans ma barre de recherche
-        $result = mysqli_query($conn, $sql);
-        $queryResult = mysqli_num_rows($result);
+        $statement = $pdo->query($sql);
+        $article = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-        if($queryResult > 0 ){
-            while($row = mysqli_fetch_assoc($result)){
+
+        if($article){
+            foreach($article as $article){
                 echo "<div>
-                <h3>".$row['nom_article']."</h3>
-                <p>Description : ".$row['description_article']."</p>
-                <p>Prix unitaire : ".$row['prix_unit_article']." €</p>
-                <p>Prix au kg : ".$row['prix_kg']." €</p>
+                <h3>".$article['nom_article']."</h3>
+                <p>Description : ".$article['description_article']."</p>
+                <p>Prix unitaire : ".$article['prix_unit_article']." €</p>
                 </div>";
             }
         }else{
